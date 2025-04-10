@@ -1,0 +1,198 @@
+-- Teachers jadvali
+Create Table Teachers(
+   TeacherId BigInt Identity(1, 1) Primary Key,
+   FirstName Nvarchar(50) not null,
+   LastName Nvarchar(50) not null,
+   Age int not null,
+   PhoneNumber Nvarchar(13) null,
+   Grade Nvarchar(50) not null,
+   Subject Nvarchar(50) null
+);
+
+-- Students jadvali
+Create Table Students(
+   StudentId BigInt Identity(1, 1) Primary Key,
+   FirstName Nvarchar(50) not null,
+   LastName Nvarchar(50) not null,
+   Age int not null,
+   PhoneNumber Nvarchar(13) null,
+   Grade Nvarchar(50) not null
+);
+
+-- ClassRooms jadvali
+Create Table ClassRooms(
+    ClassRoomId BigInt Identity(1, 1) Primary Key,
+    RoomNumber int Check(RoomNumber > 0 and RoomNumber < 100) not null
+);
+
+-- Teacher va Student o'rtasidagi ko'prik jadval
+Create Table TeacherStudent(
+    TeacherId BigInt,
+    StudentId BigInt,
+    Primary Key (TeacherId, StudentId),
+    Constraint FK_TeacherStudent_Teacher Foreign Key(TeacherId) References Teachers(TeacherId),
+    Constraint FK_TeacherStudent_Student Foreign Key(StudentId) References Students(StudentId)
+);
+
+-- ClassRoom va Teacher o'rtasidagi bog'lanish
+Create Table ClassRoomTeachers(
+    ClassRoomId BigInt,
+    TeacherId BigInt,
+    Primary Key (ClassRoomId, TeacherId),
+    Constraint FK_ClassRoomTeachers_ClassRoom Foreign Key(ClassRoomId) References ClassRooms(ClassRoomId),
+    Constraint FK_ClassRoomTeachers_Teacher Foreign Key(TeacherId) References Teachers(TeacherId)
+);
+
+-- ClassRoom va Student o'rtasidagi bog'lanish
+Create Table ClassRoomStudents(
+    ClassRoomId BigInt,
+    StudentId BigInt,
+    Primary Key (ClassRoomId, StudentId),
+    Constraint FK_ClassRoomStudents_ClassRoom Foreign Key(ClassRoomId) References ClassRooms(ClassRoomId),
+    Constraint FK_ClassRoomStudents_Student Foreign Key(StudentId) References Students(StudentId)
+);
+
+-- Teachers jadvaliga 20 ta o‘qituvchi qo‘shish
+INSERT INTO Teachers (FirstName, LastName, Age, PhoneNumber, Grade, Subject) 
+VALUES 
+('John', 'Doe', 35, '1234567890', 'Math', 'Algebra'),
+('Jane', 'Smith', 40, '2345678901', 'Science', 'Physics'),
+('Michael', 'Johnson', 29, '3456789012', 'History', 'World History'),
+('Sarah', 'Brown', 32, '4567890123', 'English', 'Literature'),
+('David', 'Williams', 50, '5678901234', 'Art', 'Painting'),
+('Emily', 'Jones', 38, '6789012345', 'Math', 'Geometry'),
+('James', 'Miller', 45, '7890123456', 'Science', 'Biology'),
+('Olivia', 'Davis', 28, '8901234567', 'History', 'Modern History'),
+('William', 'García', 33, '9012345678', 'Music', 'Guitar'),
+('Sophia', 'Martínez', 41, '0123456789', 'Math', 'Calculus'),
+('Daniel', 'Hernández', 36, '1234567890', 'Literature', 'Poetry'),
+('Lucas', 'Lopez', 47, '2345678901', 'Science', 'Chemistry'),
+('Isabella', 'González', 34, '3456789012', 'English', 'Writing'),
+('Ethan', 'Perez', 39, '4567890123', 'Art', 'Drawing'),
+('Charlotte', 'Taylor', 42, '5678901234', 'History', 'Ancient History'),
+('Benjamin', 'Wilson', 31, '6789012345', 'Physics', 'Quantum Mechanics'),
+('Amelia', 'Anderson', 29, '7890123456', 'Math', 'Trigonometry'),
+('Mason', 'Thomas', 37, '8901234567', 'Science', 'Physics'),
+('Lily', 'Jackson', 30, '9012345678', 'Music', 'Piano'),
+('Henry', 'White', 44, '0123456789', 'Chemistry', 'Organic Chemistry');
+
+
+-- Students jadvaliga 20 ta talaba qo‘shish
+INSERT INTO Students (FirstName, LastName, Age, PhoneNumber, Grade) 
+VALUES 
+('Alice', 'Walker', 18, '1112233445', 'A'),
+('Bob', 'Lewis', 19, '2233445566', 'B'),
+('Charlie', 'Martinez', 20, '3344556677', 'A'),
+('Diana', 'Harris', 17, '4455667788', 'C'),
+('Eva', 'Clark', 18, '5566778899', 'B'),
+('Frank', 'Rodriguez', 19, '6677889900', 'A'),
+('Grace', 'Lopez', 20, '7788990011', 'B'),
+('Henry', 'Garcia', 17, '8899001122', 'C'),
+('Ivy', 'King', 18, '9900112233', 'A'),
+('Jack', 'Scott', 19, '1011122334', 'B'),
+('Kara', 'Morris', 20, '1122334455', 'A'),
+('Leo', 'Jackson', 17, '2233445566', 'C'),
+('Mia', 'White', 18, '3344556677', 'A'),
+('Nina', 'King', 19, '4455667788', 'B'),
+('Oscar', 'Lopez', 20, '5566778899', 'B'),
+('Paul', 'Young', 17, '6677889900', 'A'),
+('Quinn', 'Lee', 18, '7788990011', 'B'),
+('Rita', 'Carter', 19, '8899001122', 'A'),
+('Sam', 'Nelson', 20, '9900112233', 'B'),
+('Tina', 'Adams', 17, '1011122334', 'C');
+
+-- ClassRooms jadvaliga 20 ta xona qo‘shish (RoomNumber 1 dan 99 oralig‘ida)
+INSERT INTO ClassRooms (RoomNumber)
+VALUES
+(1),
+(2),
+(3),
+(4),
+(5),
+(6),
+(7),
+(8),
+(9),
+(10),
+(11),
+(12),
+(13),
+(14),
+(15),
+(16),
+(17),
+(18),
+(19),
+(20);
+
+-- Teacher va Student o'rtasidagi bog'lanishni yaratish
+INSERT INTO TeacherStudent (TeacherId, StudentId)
+VALUES
+(1, 1),
+(1, 2),
+(2, 3),
+(3, 4),
+(4, 5),
+(5, 6),
+(6, 7),
+(7, 8),
+(8, 9),
+(9, 10),
+(10, 11),
+(11, 12),
+(12, 13),
+(13, 14),
+(14, 15),
+(15, 16),
+(16, 17),
+(17, 18),
+(18, 19),
+(19, 20);
+
+-- ClassRoom va Teacher o'rtasidagi bog'lanishni yaratish
+INSERT INTO ClassRoomTeachers (ClassRoomId, TeacherId)
+VALUES
+(2, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10),
+(11, 11),
+(12, 12),
+(13, 13),
+(14, 14),
+(15, 15),
+(16, 16),
+(17, 17),
+(18, 18),
+(19, 19),
+(20, 20);
+
+-- ClassRoom va Student o'rtasidagi bog'lanishni yaratish
+INSERT INTO ClassRoomStudents (ClassRoomId, StudentId)
+VALUES
+(2, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10),
+(11, 11),
+(12, 12),
+(13, 13),
+(14, 14),
+(15, 15),
+(16, 16),
+(17, 17),
+(18, 18),
+(19, 19),
+(20, 20);
