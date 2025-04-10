@@ -1,4 +1,5 @@
-﻿using SchoolSystem.Dal;
+﻿using Microsoft.EntityFrameworkCore;
+using SchoolSystem.Dal;
 using SchoolSystem.Dal.Entities;
 
 namespace SchoolSystem.Repository.Services.TeacherRepository;
@@ -12,35 +13,69 @@ public class TeacherRepository : ITeacherRepository
         MainContext = mainContext;
     }
 
-    public Task DeleteTeacher(long id)
+    public async Task DeleteTeacherAsync(long id)
     {
-        throw new NotImplementedException();
+        var teacher = await SelectByIdAsync(id);
+        MainContext.Teachers.Remove(teacher);
+        await MainContext.SaveChangesAsync();
     }
 
-    public Task<List<Teacher>> GetAllTeachers(bool includeStudent = false, bool includeClass = false)
+    public async Task<List<Teacher>> GetAllTeachersAsync(bool includeStudent = false, bool includeClass = false)
     {
-        throw new NotImplementedException();
+        var query = MainContext.Teachers.AsQueryable();
+
+        if (includeStudent)
+        {
+            query = query.Include(t => t.Students);
+        }
+        if (includeClass)
+        {
+            query = query.Include(t => t.ClassRoom);
+        }
+        return await query.ToListAsync();
     }
 
-    public Task<List<Teacher>> GetAllTeachersWithPeganation(int skip, int take)
+    public async Task<List<Teacher>> GetAllTeachersWithPaginationAsync(int skip, int take)
     {
-        throw new NotImplementedException();
+        if (take < 0 || skip < 0)
+        {
+            throw new ArgumentOutOfRangeException("Skip and take don't be negative");
+        }
+
+        var query = MainContext.Teachers.AsQueryable();
+
+        if (skip > 0)
+        {
+            query = query.Skip(skip);
+        }
+        if (take > 0)
+        {
+            query = query.Take(take);
+        }
+
+        return await query.ToListAsync();
     }
 
-    public async Task<long> InsertTeacher(Teacher teacher)
+    public async Task<long> InsertTeacherAsync(Teacher teacher)
     {
         await MainContext.Teachers.AddAsync(teacher);
         await MainContext.SaveChangesAsync();
         return teacher.TeacherId;
     }
 
-    public Task<Teacher?> SelectById(long id)
+    public async Task<Teacher?> SelectByIdAsync(long id)
     {
-        throw new NotImplementedException();
+        var teacher = await MainContext.Teachers.FirstOrDefaultAsync(t => t.TeacherId == id);
+        if (teacher == null)
+        {
+            throw new Exception($"Teacher not found with {id}");
+        }
+        return teacher;
     }
 
-    public Task UpdateTeacher(Teacher teacher)
+    public async Task UpdateTeacherAsync(Teacher teacher)
     {
-        throw new NotImplementedException();
+        var updateTeacher = MainContext.Teachers.Update(teacher);
+        await MainContext.SaveChangesAsync();
     }
 }

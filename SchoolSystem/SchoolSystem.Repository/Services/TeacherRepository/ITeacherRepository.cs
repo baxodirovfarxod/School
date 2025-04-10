@@ -4,10 +4,10 @@ namespace SchoolSystem.Repository.Services.TeacherRepository;
 
 public interface ITeacherRepository
 {
-    Task<long> InsertTeacher(Teacher teacher);
-    Task UpdateTeacher(Teacher teacher);
-    Task DeleteTeacher(long id);
-    Task<Teacher?> SelectById(long id);
-    Task<List<Teacher>> GetAllTeachers(bool includeStudent = false, bool includeClass = false);
-    Task<List<Teacher>> GetAllTeachersWithPeganation(int skip, int take);
+    Task<long> InsertTeacherAsync(Teacher teacher);
+    Task UpdateTeacherAsync(Teacher teacher);
+    Task DeleteTeacherAsync(long id);
+    Task<Teacher?> SelectByIdAsync(long id);
+    Task<List<Teacher>> GetAllTeachersAsync(bool includeStudent = false, bool includeClass = false);
+    Task<List<Teacher>> GetAllTeachersWithPaginationAsync(int skip, int take);
 }
