@@ -19,20 +19,7 @@ public class StudentServices : IStudentServices
 
     public async Task<List<StudentGetDto>> GetAllStudents(bool includeTeacher = false, bool includeClass = false)
     {
-        var students = await studentRepository.GetAllStudents(); // Aslida, bu List<Student> yoki IEnumerable<Student> qaytaradi
-
-        // Talabalarni StudentGetDto'ga o'zgartirish
-        var studentDtos = students.Select(s => new StudentGetDto
-        {
-            StudentId = s.StudentId,
-            FirstName = s.FirstName,
-            LastName = s.LastName,
-            Age = s.Age,
-            PhoneNumber = s.PhoneNumber,
-            Grade = s.Grade,
-        }).ToList();
-
-        return studentDtos;
+        throw new NotImplementedException();
     }
 
     public Task<List<StudentGetDto>> GetAllStudentsWithPagination(int skip, int take)

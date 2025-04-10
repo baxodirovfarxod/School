@@ -9,17 +9,6 @@ namespace SchoolSystem.Server.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        private readonly IStudentServices studentServices;
-
-        public StudentController(IStudentServices studentServices)
-        {
-            this.studentServices = studentServices;
-        }
-
-        [HttpGet]
-        public async Task<List<StudentGetDto>> GetAllStudents()
-        {
-            return await studentServices.GetAllStudents();
-        }
+        
     }
 }

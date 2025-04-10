@@ -19,7 +19,7 @@ public class StudentRepository : IStudentRepository
 
     public async Task<List<Student>> GetAllStudents(bool includeTeacher = false, bool includeClass = false)
     {
-        return mainContext.Students.ToList();
+        throw new NotImplementedException(); 
     }
 
     public Task<List<Student>> GetAllStudentsWithPagination(int skip, int take)
