@@ -1,9 +1,17 @@
-﻿using SchoolSystem.Dal.Entities;
+﻿using SchoolSystem.Dal;
+using SchoolSystem.Dal.Entities;
 
 namespace SchoolSystem.Repository.Services.TeacherRepository;
 
 public class TeacherRepository : ITeacherRepository
 {
+    private readonly MainContext MainContext;
+
+    public TeacherRepository(MainContext mainContext)
+    {
+        MainContext = mainContext;
+    }
+
     public Task DeleteTeacher(long id)
     {
         throw new NotImplementedException();
@@ -19,9 +27,11 @@ public class TeacherRepository : ITeacherRepository
         throw new NotImplementedException();
     }
 
-    public Task<long> InsertTeacher(Teacher teacher)
+    public async Task<long> InsertTeacher(Teacher teacher)
     {
-        throw new NotImplementedException();
+        await MainContext.Teachers.AddAsync(teacher);
+        await MainContext.SaveChangesAsync();
+        return teacher.TeacherId;
     }
 
     public Task<Teacher?> SelectById(long id)
