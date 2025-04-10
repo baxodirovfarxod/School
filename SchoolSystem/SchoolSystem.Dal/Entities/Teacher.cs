@@ -3,14 +3,14 @@
 public class Teacher
 {
     public long TeacherId { get; set; }
-    public string FirstName { get; set; } = null!;
-    public string LastName { get; set; } = null!;
+    public string FirstName { get; set; } 
+    public string LastName { get; set; }
     public int Age { get; set; }
     public string? PhoneNumber { get; set; }
-    public string Grade { get; set; } = null!;
+    public string Grade { get; set; } 
     public string? Subject { get; set; }
 
-    public ICollection<TeacherStudent> TeacherStudents { get; set; } = new List<TeacherStudent>();
-    public ICollection<ClassRoomTeacher> ClassRoomTeachers { get; set; } = new List<ClassRoomTeacher>();
+    public ICollection<Student> Students { get; set; } 
+    public ICollection<ClassRoom> ClassRoom { get; set; } 
 }
 

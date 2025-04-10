@@ -16,6 +16,7 @@ namespace SchoolSystem.Server
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Configuration();
+            builder.DIConfigure();
 
             var app = builder.Build();
 

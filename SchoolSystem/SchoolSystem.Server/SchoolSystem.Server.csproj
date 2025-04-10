@@ -22,6 +22,11 @@
   <ItemGroup>
     <ProjectReference Include="..\SchoolSystem.Bll\SchoolSystem.Bll.csproj" />
     <ProjectReference Include="..\SchoolSystem.Dal\SchoolSystem.Dal.csproj" />
+    <ProjectReference Include="..\SchoolSystem.Repository\SchoolSystem.Repository.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
