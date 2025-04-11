@@ -4,10 +4,10 @@ namespace SchoolSystem.Bll.Services.TeacherServices;
 
 public interface ITeacherServices
 {
-    Task<long> InsertTeacher(TeacherCreateDto teacherCreateDto);
-    Task UpdateTeacher(TeacherCreateDto teacherCreateDto);
-    Task DeleteTeacher(long id);
-    Task<TeacherGetDto?> GetTeacherById(long id);
-    Task<List<TeacherGetDto>> GetAllTeachers(bool includeStudent = false, bool includeClass = false);
-    Task<List<TeacherGetDto>> GetAllTeachersWithPagination(int skip, int take);
+    Task<long> InsertTeacherAsync(TeacherCreateDto teacherCreateDto);
+    Task UpdateTeacherAsync(TeacherUpdateDto teacherUpdateDto);
+    Task DeleteTeacherAsync(long id);
+    Task<TeacherGetDto?> GetTeacherByIdAsync(long id);
+    Task<List<TeacherGetDto>> GetAllTeachersAsync(bool includeStudent = false, bool includeClass = false);
+    Task<List<TeacherGetDto>> GetAllTeachersWithPaginationAsync(int skip, int take);
 }
