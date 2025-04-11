@@ -10,4 +10,13 @@
     <ProjectReference Include="..\SchoolSystem.Repository\SchoolSystem.Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Validators\ClassroomValidator\" />
+    <Folder Include="Validators\StudentValidator\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
+  </ItemGroup>
+
 </Project>

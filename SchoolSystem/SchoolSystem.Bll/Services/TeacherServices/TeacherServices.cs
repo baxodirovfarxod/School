@@ -1,36 +1,117 @@
-﻿using SchoolSystem.Bll.Dtos;
+﻿using FluentValidation;
+using SchoolSystem.Bll.Dtos;
+using SchoolSystem.Dal.Entities;
+using SchoolSystem.Repository.Services.TeacherRepository;
 
 namespace SchoolSystem.Bll.Services.TeacherServices;
 
 public class TeacherServices : ITeacherServices
 {
-    public Task DeleteTeacher(long id)
+    private readonly ITeacherRepository TeacherRepository;
+    private readonly IValidator<TeacherCreateDto> CreateValidator;
+    private readonly IValidator<TeacherUpdateDto> UpdateValidator;
+    public TeacherServices(ITeacherRepository teacherRepository, IValidator<TeacherCreateDto> createValidator, IValidator<TeacherUpdateDto> updateValidator)
     {
-        throw new NotImplementedException();
+        TeacherRepository = teacherRepository;
+        CreateValidator = createValidator;
+        UpdateValidator = updateValidator;
     }
 
-    public Task<List<TeacherGetDto>> GetAllTeachers(bool includeStudent = false, bool includeClass = false)
+    public async Task DeleteTeacherAsync(long id)
     {
-        throw new NotImplementedException();
+        var teacher = await TeacherRepository.SelectByIdAsync(id);
+
+        await TeacherRepository.DeleteTeacherAsync(id);
     }
 
-    public Task<List<TeacherGetDto>> GetAllTeachersWithPagination(int skip, int take)
+    public async Task<List<TeacherGetDto>> GetAllTeachersAsync(bool includeStudent = false, bool includeClass = false)
     {
-        throw new NotImplementedException();
+        var teachers = await TeacherRepository.GetAllTeachersAsync(includeStudent, includeClass);
+        var teachersDtos = teachers.Select(teacher => ConvertToDto(teacher)).ToList();
+        return teachersDtos;
     }
 
-    public Task<TeacherGetDto?> GetTeacherById(long id)
+    public async Task<List<TeacherGetDto>> GetAllTeachersWithPaginationAsync(int skip, int take)
     {
-        throw new NotImplementedException();
+        var teacher = await TeacherRepository.GetAllTeachersWithPaginationAsync(skip, take);
+        var teachersDtos = teacher.Select(teacher => ConvertToDto(teacher)).ToList();
+        return teachersDtos;
     }
 
-    public Task<long> InsertTeacher(TeacherCreateDto teacherCreateDto)
+    public async Task<TeacherGetDto?> GetTeacherByIdAsync(long id)
     {
-        throw new NotImplementedException();
+        var teacher = await TeacherRepository.SelectByIdAsync(id);
+        if (teacher == null)
+        {
+            throw new Exception($"Teacher with id {id} not found");
+        }
+        return ConvertToDto(teacher);
     }
 
-    public Task UpdateTeacher(TeacherCreateDto teacherCreateDto)
+    public async Task<long> InsertTeacherAsync(TeacherCreateDto teacherCreateDto)
     {
-        throw new NotImplementedException();
+        var validationResult = CreateValidator.Validate(teacherCreateDto);
+
+        if (!validationResult.IsValid)
+        {
+            throw new Exception("Validation error while insert teacher!");
+        }
+        var teacher = ConvertToEntity(teacherCreateDto);
+
+        var id = await TeacherRepository.InsertTeacherAsync(teacher);
+
+        return id;
+    }
+
+    public async Task UpdateTeacherAsync(TeacherUpdateDto teacherUpdateDto)
+    {
+        var validationResult = UpdateValidator.Validate(teacherUpdateDto);
+
+        if (!validationResult.IsValid)
+        {
+            throw new Exception("Validation error while update teacher!");
+        }
+        var teacher = ConvertToEntity(teacherUpdateDto);
+
+        await TeacherRepository.UpdateTeacherAsync(teacher);
+    }
+
+    private Teacher ConvertToEntity(TeacherCreateDto teacherCreateDto)
+    {
+        return new Teacher
+        {
+            FirstName = teacherCreateDto.FirstName,
+            LastName = teacherCreateDto.LastName,
+            Age = teacherCreateDto.Age,
+            PhoneNumber = teacherCreateDto.PhoneNumber,
+            Grade = teacherCreateDto.Grade,
+            Subject = teacherCreateDto.Subject
+        };
+    }
+    private Teacher ConvertToEntity(TeacherUpdateDto teacherUpdateDto)
+    {
+        return new Teacher
+        {
+            TeacherId = teacherUpdateDto.Id,
+            FirstName = teacherUpdateDto.FirstName,
+            LastName = teacherUpdateDto.LastName,
+            Age = teacherUpdateDto.Age,
+            PhoneNumber = teacherUpdateDto.PhoneNumber,
+            Grade = teacherUpdateDto.Grade,
+            Subject = teacherUpdateDto.Subject
+        };
+    }
+    private TeacherGetDto ConvertToDto(Teacher teacher)
+    {
+        return new TeacherGetDto
+        {
+            TeacherId = teacher.TeacherId,
+            FirstName = teacher.FirstName,
+            LastName = teacher.LastName,
+            Age = teacher.Age,
+            PhoneNumber = teacher.PhoneNumber,
+            Grade = teacher.Grade,
+            Subject = teacher.Subject
+        };
     }
 }
