@@ -10,7 +10,7 @@ public class Teacher
     public string Grade { get; set; } 
     public string? Subject { get; set; }
 
-    public ICollection<Student> Students { get; set; } 
-    public ICollection<ClassRoom> ClassRoom { get; set; } 
+    public ICollection<TeacherStudent> TeacherStudents { get; set; } 
+    public ICollection<ClassRoomTeacher> ClassRoomTeachers { get; set; } 
 }
 
