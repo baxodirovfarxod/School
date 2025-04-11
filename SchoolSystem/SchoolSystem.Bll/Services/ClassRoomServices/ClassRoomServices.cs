@@ -12,7 +12,7 @@ public class ClassRoomServices : IClassRoomServices
     {
         _classRoomRepository = classRoomRepository;
     }
-    public async Task DeleteClassRoom(long id)
+    public async Task DeleteClassRoomAsync(long id)
     {
         var classRoom = await _classRoomRepository.SelectByIdAsync(id);
         if (classRoom == null)
@@ -21,7 +21,7 @@ public class ClassRoomServices : IClassRoomServices
 
     }
 
-    public async Task<List<ClassRoomGetDto>> GetAllClassRooms(bool includeTeachers = false, bool includeStudents = false)
+    public async Task<List<ClassRoomGetDto>> GetAllClassRoomsAsync(bool includeTeachers = false, bool includeStudents = false)
     {
 
         var classRoom = await _classRoomRepository.GetAllClassRoomsAsync(includeTeachers, includeStudents);
@@ -35,7 +35,7 @@ public class ClassRoomServices : IClassRoomServices
         return classRoomDtos;
     }
 
-    public async Task<List<ClassRoomGetDto>> GetAllClassRoomsWithPagination(int skip, int take)
+    public async Task<List<ClassRoomGetDto>> GetAllClassRoomsWithPaginationAsync(int skip, int take)
     {
 
         if (skip < 0)
@@ -65,7 +65,7 @@ public class ClassRoomServices : IClassRoomServices
 
     }
 
-    public async Task<ClassRoomGetDto?> GetClassRoomById(long id)
+    public async Task<ClassRoomGetDto?> GetClassRoomByIdAsync(long id)
     {
         var classRoom = await _classRoomRepository.SelectByIdAsync(id);
         if (classRoom == null)
@@ -76,7 +76,7 @@ public class ClassRoomServices : IClassRoomServices
         return classRoomGetDto;
     }
 
-    public async Task<long> InsertClassRoom(ClassRoomCreateDto classRoomCreateDto)
+    public async Task<long> InsertClassRoomAsync(ClassRoomCreateDto classRoomCreateDto)
     {
         var classRoom = ConvertToClassRoomEntity(classRoomCreateDto);
         var exists = await _classRoomRepository.ExistsByRoomNumberAsync(classRoomCreateDto.RoomNumber);
@@ -88,7 +88,7 @@ public class ClassRoomServices : IClassRoomServices
         return id;
     }
 
-    public async Task UpdateClassRoom(ClassRoomCreateDto classRoomCreateDto)
+    public async Task UpdateClassRoomAsync(ClassRoomCreateDto classRoomCreateDto)
     {
         var classRoom = ConvertToClassRoomEntity(classRoomCreateDto);
         await _classRoomRepository.SelectByIdAsync(classRoom.ClassRoomId);

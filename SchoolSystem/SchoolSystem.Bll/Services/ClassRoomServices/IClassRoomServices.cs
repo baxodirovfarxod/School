@@ -4,10 +4,10 @@ namespace SchoolSystem.Bll.Services.ClassRoomServices;
 
 public interface IClassRoomServices
 {
-    Task<long> InsertClassRoom(ClassRoomCreateDto classRoomCreateDto);
-    Task UpdateClassRoom(ClassRoomCreateDto classRoomCreateDto);
-    Task DeleteClassRoom(long id);
-    Task<ClassRoomGetDto?> GetClassRoomById(long id);
-    Task<List<ClassRoomGetDto>> GetAllClassRoomsWithPagination(int skip, int take);
-    Task<List<ClassRoomGetDto>> GetAllClassRooms(bool includeTeachers = false, bool includeStudents = false);
+    Task<long> InsertClassRoomAsync(ClassRoomCreateDto classRoomCreateDto);
+    Task UpdateClassRoomAsync(ClassRoomCreateDto classRoomCreateDto);
+    Task DeleteClassRoomAsync(long id);
+    Task<ClassRoomGetDto?> GetClassRoomByIdAsync(long id);
+    Task<List<ClassRoomGetDto>> GetAllClassRoomsWithPaginationAsync(int skip, int take);
+    Task<List<ClassRoomGetDto>> GetAllClassRoomsAsync(bool includeTeachers = false, bool includeStudents = false);
 }
