@@ -25,12 +25,12 @@ public class ClassRoomServices : IClassRoomServices
     {
 
         var classRoom = await _classRoomRepository.GetAllClassRoomsAsync(includeTeachers, includeStudents);
-        var classRoomDtos = classRoom.Select(cr => ConvertToClassRoomGetDto(cr)).ToList();
         if (classRoom == null || !classRoom.Any())
         {
             return new List<ClassRoomGetDto>();
 
         }
+        var classRoomDtos = classRoom.Select(cr => ConvertToClassRoomGetDto(cr)).ToList();
 
         return classRoomDtos;
     }
