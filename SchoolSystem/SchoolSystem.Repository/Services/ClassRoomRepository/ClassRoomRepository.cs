@@ -1,36 +1,45 @@
-﻿using SchoolSystem.Dal.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using SchoolSystem.Dal.Entities;
 
 namespace SchoolSystem.Repository.Services.ClassRoomRepository;
 
 public class ClassRoomRepository : IClassRoomRepository
 {
-    public Task DeleteClassRoom(long id)
+    
+    public Task DeleteClassRoomAsync(long id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<List<ClassRoom>> GetAllClassRooms(bool includeTeachers = false, bool includeStudents = false)
+    public Task<bool> ExistsByRoomNumberAsync(int roomNumber)
     {
         throw new NotImplementedException();
     }
 
-    public Task<List<ClassRoom>> GetAllClassRoomsWithPagination(int skip, int take)
+    public Task<List<ClassRoom>> GetAllClassRoomsAsync(bool includeTeachers = false, bool includeStudents = false)
     {
         throw new NotImplementedException();
     }
 
-    public Task<long> InsertClassRoom(ClassRoom classRoom)
+    public Task<List<ClassRoom>> GetAllClassRoomsWithPaginationAsync(int skip, int take)
     {
         throw new NotImplementedException();
     }
 
-    public Task<ClassRoom?> SelectById(long id)
+    public Task<long> InsertClassRoomAsync(ClassRoom classRoom)
     {
         throw new NotImplementedException();
     }
 
-    public Task UpdateClassRoom(ClassRoom classRoom)
+    public Task<ClassRoom?> SelectByIdAsync(long id)
     {
         throw new NotImplementedException();
     }
+
+    public Task UpdateClassRoomAsync(ClassRoom classRoom)
+    {
+        throw new NotImplementedException();
+    }
+    
+
 }
