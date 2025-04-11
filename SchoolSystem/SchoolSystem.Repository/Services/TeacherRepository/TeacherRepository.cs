@@ -26,12 +26,16 @@ public class TeacherRepository : ITeacherRepository
 
         if (includeStudent)
         {
-            query = query.Include(t => t.Students);
+            query = query
+                .Include(t => t.TeacherStudents)
+                    .ThenInclude(ts => ts.Student);
         }
+
         if (includeClass)
         {
-            query = query.Include(t => t.ClassRoom);
+            query = query.Include(t => t.ClassRoomTeachers);
         }
+
         return await query.ToListAsync();
     }
 

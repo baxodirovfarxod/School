@@ -7,9 +7,9 @@ public class Student
     public string LastName { get; set; } 
     public int Age { get; set; }
     public string? PhoneNumber { get; set; }
-    public string Grade { get; set; } 
+    public string Grade { get; set; }
 
-    public ICollection<Teacher> Teacher { get; set; } 
-    public ICollection<ClassRoom> ClassRoom { get; set; }
+    public ICollection<TeacherStudent> TeacherStudents { get; set; }
+    public ICollection<ClassRoomStudent> ClassRoomStudent { get; set; }
 }
 
