@@ -1,36 +1,117 @@
 ﻿using SchoolSystem.Bll.Dtos;
+using SchoolSystem.Dal.Entities;
+using SchoolSystem.Repository.Services.ClassRoomRepository;
 
 namespace SchoolSystem.Bll.Services.ClassRoomServices;
 
 public class ClassRoomServices : IClassRoomServices
 {
-    public Task DeleteClassRoom(long id)
+    private readonly IClassRoomRepository _classRoomRepository;
+
+    public ClassRoomServices(IClassRoomRepository classRoomRepository)
     {
-        throw new NotImplementedException();
+        _classRoomRepository = classRoomRepository;
+    }
+    public async Task DeleteClassRoom(long id)
+    {
+        var classRoom = await _classRoomRepository.SelectByIdAsync(id);
+        if (classRoom == null)
+            throw new KeyNotFoundException($"ClassRoom with ID {id} not found.");
+        await _classRoomRepository.DeleteClassRoomAsync(id);
+
     }
 
-    public Task<List<ClassRoomGetDto>> GetAllClassRooms(bool includeTeachers = false, bool includeStudents = false)
+    public async Task<List<ClassRoomGetDto>> GetAllClassRooms(bool includeTeachers = false, bool includeStudents = false)
     {
-        throw new NotImplementedException();
+
+        var classRoom = await _classRoomRepository.GetAllClassRoomsAsync(includeTeachers, includeStudents);
+        var classRoomDtos = classRoom.Select(cr => ConvertToClassRoomGetDto(cr)).ToList();
+        if (classRoom == null || !classRoom.Any())
+        {
+            return new List<ClassRoomGetDto>();
+
+        }
+
+        return classRoomDtos;
     }
 
-    public Task<List<ClassRoomGetDto>> GetAllClassRoomsWithPagination(int skip, int take)
+    public async Task<List<ClassRoomGetDto>> GetAllClassRoomsWithPagination(int skip, int take)
     {
-        throw new NotImplementedException();
+
+        if (skip < 0)
+        {
+            throw new ArgumentException("Skip must be zero or greater.");
+        }
+
+        if (take <= 0)
+        {
+
+            throw new ArgumentException("Take must be greater than zero.");
+        }
+
+        var classRooms = await _classRoomRepository.GetAllClassRoomsWithPaginationAsync(skip, take);
+
+        if (classRooms == null || !classRooms.Any())
+        {
+            return new List<ClassRoomGetDto>();
+        }
+
+        var classRoomDtos = classRooms
+                .Select(cr => ConvertToClassRoomGetDto(cr))
+                .Where(dto => dto != null)
+                .ToList();
+
+        return classRoomDtos;
+
     }
 
-    public Task<ClassRoomGetDto?> GetClassRoomById(long id)
+    public async Task<ClassRoomGetDto?> GetClassRoomById(long id)
     {
-        throw new NotImplementedException();
+        var classRoom = await _classRoomRepository.SelectByIdAsync(id);
+        if (classRoom == null)
+        {
+            throw new KeyNotFoundException($"ClassRoom with ID {id} not found.");
+        }
+        var classRoomGetDto = ConvertToClassRoomGetDto(classRoom);
+        return classRoomGetDto;
     }
 
-    public Task<long> InsertClassRoom(ClassRoomCreateDto classRoomCreateDto)
+    public async Task<long> InsertClassRoom(ClassRoomCreateDto classRoomCreateDto)
     {
-        throw new NotImplementedException();
+        var classRoom = ConvertToClassRoomEntity(classRoomCreateDto);
+        var exists = await _classRoomRepository.ExistsByRoomNumberAsync(classRoomCreateDto.RoomNumber);
+        if (exists)
+        {
+            throw new InvalidOperationException($"Room number {classRoomCreateDto.RoomNumber} is already exists");
+        }
+        var id = await _classRoomRepository.InsertClassRoomAsync(classRoom);
+        return id;
     }
 
-    public Task UpdateClassRoom(ClassRoomCreateDto classRoomCreateDto)
+    public async Task UpdateClassRoom(ClassRoomCreateDto classRoomCreateDto)
     {
-        throw new NotImplementedException();
+        var classRoom = ConvertToClassRoomEntity(classRoomCreateDto);
+        await _classRoomRepository.SelectByIdAsync(classRoom.ClassRoomId);
+        await _classRoomRepository.UpdateClassRoomAsync(classRoom);
     }
+
+
+    private ClassRoomGetDto ConvertToClassRoomGetDto(ClassRoom classRoom)
+    {
+        return new ClassRoomGetDto()
+        {
+            ClassRoomId = classRoom.ClassRoomId,
+            RoomNumber = classRoom.RoomNumber,
+        };
+    }
+
+    private ClassRoom ConvertToClassRoomEntity(ClassRoomCreateDto classRoomCreateDto)
+    {
+        return new ClassRoom()
+        {
+            RoomNumber = classRoomCreateDto.RoomNumber,
+        };
+    }
+
+
 }
