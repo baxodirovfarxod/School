@@ -88,9 +88,9 @@ public class ClassRoomServices : IClassRoomServices
         return id;
     }
 
-    public async Task UpdateClassRoomAsync(ClassRoomCreateDto classRoomCreateDto)
+    public async Task UpdateClassRoomAsync(ClassRoomGetDto classRoomGetDto)
     {
-        var classRoom = ConvertToClassRoomEntity(classRoomCreateDto);
+        var classRoom = ConvertToClassRoomEntity(classRoomGetDto);
         await _classRoomRepository.SelectByIdAsync(classRoom.ClassRoomId);
         await _classRoomRepository.UpdateClassRoomAsync(classRoom);
     }
@@ -110,6 +110,14 @@ public class ClassRoomServices : IClassRoomServices
         return new ClassRoom()
         {
             RoomNumber = classRoomCreateDto.RoomNumber,
+        };
+    }
+    private ClassRoom ConvertToClassRoomEntity(ClassRoomGetDto classRoomGetDto)
+    {
+        return new ClassRoom()
+        {
+            RoomNumber = classRoomGetDto.RoomNumber,
+            ClassRoomId=classRoomGetDto.ClassRoomId,
         };
     }
 }
