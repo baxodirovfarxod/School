@@ -28,7 +28,7 @@ namespace SchoolSystem.Server.Controllers
             return classRooms;
         }
         [HttpPut("updateClassRoom")]
-        public async Task PutMusic(ClassRoomGetDto classRoomGetDto)
+        public async Task PutClassRoom(ClassRoomGetDto classRoomGetDto)
         {
             await _classRoomService.UpdateClassRoomAsync(classRoomGetDto);
         }
