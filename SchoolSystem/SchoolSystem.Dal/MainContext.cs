@@ -26,6 +26,9 @@ public class MainContext : DbContext
         modelBuilder.Entity<ClassRoom>().ToTable("ClassRooms");
 
         modelBuilder.Entity<TeacherStudent>().ToTable("TeacherStudent");
+        modelBuilder.Entity<TeacherStudent>()
+    .HasKey(ts => new { ts.TeacherId, ts.StudentId });
+
         modelBuilder.Entity<ClassRoomTeacher>().ToTable("ClassRoomTeachers");
         modelBuilder.Entity<ClassRoomStudent>().ToTable("ClassRoomStudents");
 
@@ -33,7 +36,5 @@ public class MainContext : DbContext
             .HasKey(crs => new { crs.ClassRoomId, crs.StudentId });
         modelBuilder.Entity<ClassRoomTeacher>()
             .HasKey(crt => new { crt.ClassRoomId, crt.TeacherId });
-        modelBuilder.Entity<TeacherStudent>()
-            .HasKey(ts => new { ts.TeacherId, ts.StudentId });
     }
 }

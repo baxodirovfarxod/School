@@ -5,7 +5,7 @@ public class ClassRoom
     public long ClassRoomId { get; set; }
     public int RoomNumber { get; set; }
 
-    public ICollection<Teacher> Teachers { get; set; }
-    public ICollection<Student> Students { get; set; } 
+    public ICollection<ClassRoomStudent> ClassRoomStudent { get; set; }
+    public ICollection<ClassRoomTeacher> ClassRoomTeacher { get; set; }
 }
 
