@@ -29,10 +29,10 @@ public class StudentRepository : IStudentRepository
         IQueryable<Student> query = mainContext.Students;
 
         if (includeTeacher)
-            query = query.Include(s => s.Teacher);
+            query = query.Include(s => s.TeacherStudents);
 
         if (includeClass)
-            query = query.Include(s => s.ClassRoom);
+            query = query.Include(s => s.ClassRoomStudent);
 
         return await query.ToListAsync();
     }
@@ -57,8 +57,8 @@ public class StudentRepository : IStudentRepository
     public async Task<Student?> SelectById(long id)
     {
         var res = await mainContext.Students
-                .Include(s => s.Teacher)
-                .Include(s => s.ClassRoom) 
+                .Include(s => s.TeacherStudents)
+                .Include(s => s.ClassRoomStudent) 
                 .FirstOrDefaultAsync(s => s.StudentId == id);
 
         return res;

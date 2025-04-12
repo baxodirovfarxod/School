@@ -32,10 +32,10 @@ public class ClassRoomRepository : IClassRoomRepository
         IQueryable<ClassRoom> query = _mainContext.ClassRooms;
 
         if (includeTeachers)
-            query = query.Include(c => c.Teachers);
+            query = query.Include(c => c.ClassRoomTeacher);
 
         if (includeStudents)
-            query = query.Include(c => c.Students);
+            query = query.Include(c => c.ClassRoomStudent);
 
         return await query.ToListAsync();
     }
@@ -60,8 +60,8 @@ public class ClassRoomRepository : IClassRoomRepository
     public async Task<ClassRoom?> SelectByIdAsync(long id)
     {
          var res = await _mainContext.ClassRooms
-                    .Include(c => c.Teachers) 
-                    .Include(c => c.Students) 
+                    .Include(c => c.ClassRoomTeacher) 
+                    .Include(c => c.ClassRoomStudent) 
                     .FirstOrDefaultAsync(c => c.ClassRoomId == id);
 
         return res;
