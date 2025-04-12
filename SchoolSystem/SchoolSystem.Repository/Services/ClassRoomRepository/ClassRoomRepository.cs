@@ -1,44 +1,76 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SchoolSystem.Dal;
 using SchoolSystem.Dal.Entities;
 
 namespace SchoolSystem.Repository.Services.ClassRoomRepository;
 
 public class ClassRoomRepository : IClassRoomRepository
 {
-    
-    public Task DeleteClassRoomAsync(long id)
+    private readonly MainContext _mainContext;
+
+    public ClassRoomRepository(MainContext mainContext)
     {
-        throw new NotImplementedException();
+        _mainContext = mainContext;
+    }
+    public async Task DeleteClassRoomAsync(long id)
+    {
+        var classRoom = await _mainContext.ClassRooms.FindAsync(id);      
+        if (classRoom is not null)
+        {
+            _mainContext.ClassRooms.Remove(classRoom);
+            await _mainContext.SaveChangesAsync();
+        }
     }
 
-    public Task<bool> ExistsByRoomNumberAsync(int roomNumber)
+    public async Task<bool> ExistsByRoomNumberAsync(int roomNumber)
     {
-        throw new NotImplementedException();
+        return await _mainContext.ClassRooms.AnyAsync(c => c.RoomNumber == roomNumber);
     }
 
-    public Task<List<ClassRoom>> GetAllClassRoomsAsync(bool includeTeachers = false, bool includeStudents = false)
+    public async Task<List<ClassRoom>> GetAllClassRoomsAsync(bool includeTeachers = false, bool includeStudents = false)
     {
-        throw new NotImplementedException();
+        IQueryable<ClassRoom> query = _mainContext.ClassRooms;
+
+        if (includeTeachers)
+            query = query.Include(c => c.Teachers);
+
+        if (includeStudents)
+            query = query.Include(c => c.Students);
+
+        return await query.ToListAsync();
     }
 
-    public Task<List<ClassRoom>> GetAllClassRoomsWithPaginationAsync(int skip, int take)
+    public async Task<List<ClassRoom>> GetAllClassRoomsWithPaginationAsync(int skip, int take)
     {
-        throw new NotImplementedException();
+        var res =  await _mainContext.ClassRooms
+                    .Skip(skip)
+                    .Take(take)
+                    .ToListAsync();
+
+        return res;
     }
 
-    public Task<long> InsertClassRoomAsync(ClassRoom classRoom)
+    public async Task<long> InsertClassRoomAsync(ClassRoom classRoom)
     {
-        throw new NotImplementedException();
+        await _mainContext.ClassRooms.AddAsync(classRoom);
+        await _mainContext.SaveChangesAsync();
+        return classRoom.ClassRoomId;
     }
 
-    public Task<ClassRoom?> SelectByIdAsync(long id)
+    public async Task<ClassRoom?> SelectByIdAsync(long id)
     {
-        throw new NotImplementedException();
+         var res = await _mainContext.ClassRooms
+                    .Include(c => c.Teachers) 
+                    .Include(c => c.Students) 
+                    .FirstOrDefaultAsync(c => c.ClassRoomId == id);
+
+        return res;
     }
 
-    public Task UpdateClassRoomAsync(ClassRoom classRoom)
+    public async Task UpdateClassRoomAsync(ClassRoom classRoom)
     {
-        throw new NotImplementedException();
+        _mainContext.ClassRooms.Update(classRoom);
+        await _mainContext.SaveChangesAsync();
     }
     
 
