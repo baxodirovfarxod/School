@@ -9,6 +9,6 @@ namespace SchoolSystem.Server.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        
+        private readonly IStudentServices _studentServices;
     }
 }
