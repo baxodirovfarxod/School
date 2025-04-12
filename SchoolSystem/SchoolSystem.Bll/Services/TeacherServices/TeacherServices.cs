@@ -56,6 +56,7 @@ public class TeacherServices : ITeacherServices
         {
             throw new Exception("Validation error while insert teacher!");
         }
+
         var teacher = ConvertToEntity(teacherCreateDto);
 
         var id = await TeacherRepository.InsertTeacherAsync(teacher);
